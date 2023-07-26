@@ -1,5 +1,4 @@
 from IPython.display import Markdown, display
-import numbers
 import pandas as pd
 import numpy as np
 
@@ -13,15 +12,15 @@ def jupyprint(x):
 
     Examples
     ==================
-    
+
     Markdown:
     jupyprint("Hello world!")
 
     Numbers:
     jupyprint(42)
     jupyprint(3.14)
-    jupyprint(5 + 3j)    
-    
+    jupyprint(5 + 3j)
+
     LaTex:
     jupyprint("$ \sum{(y_i - \hat{y})^2} $")
 
@@ -38,9 +37,9 @@ def jupyprint(x):
     jupyprint(pd.DataFrame({'A': np.repeat('A', 10)}))
 
     """
-    
+
     # if input is a string or number, display  as markdown/LaTeX
-    if (isinstance(x, str)) | (isinstance(x, numbers.Number)):
+    if (isinstance(x, str)) | (isinstance(x, (int, float, complex))):
         display(Markdown(str(x)))
 
     # if input is a numpy array convert to markdown/LaTeX, then display
