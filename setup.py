@@ -10,9 +10,6 @@ setup(
     install_requires=[
     "numpy",
     "pandas",
-    "numbers",
-    "os",
-    "sys",
     "ipython"
     ],
 )

@@ -1,0 +1,9 @@
+*~
+*.swp
+.DS_Store
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
+*.orig
+src/*.egg-info/
+build/
