@@ -91,7 +91,7 @@ design_matrix = jp.arraytex(np.array([np.repeat(1, 5), np.repeat("$x_1$", 5), np
 
 beta_vector = jp.arraytex(np.array(['$b_'+ str(i) + '$' for i in np.arange(0, 3)]).reshape(3, 1))
 
-y_vector = jp.arraytex(np.array(['$y_'+ str(i) + '$' for i in np.arange(1, 6)]).reshape(5, 1))
+y_vector = jp.arraytex(np.array(['$\hat{y_'+ str(i) + '}$' for i in np.arange(1, 6)]).reshape(5, 1))
 
 jp.jupyprint("# The Linear Model:")
 jp.jupyprint(f"${y_vector} = {design_matrix} * {beta_vector}$")
