@@ -80,6 +80,7 @@ jp.jupyprint(f"${jp.arraytex(x)} * {jp.arraytex(y)} = {jp.arraytex(np.dot(x, y))
 x = np.array([[10, 100, 200], [8, 9, 77]])
 jp.jupyprint(f"""Hello, let us log this matrix: ${jp.arraytex(x)}$. Here is
            the logged version: $ln({jp.arraytex(x)}) = {jp.arraytex(np.log(x).round(2))}$""")
+jp.jupyprint("Here is some LaTeX $\hat{y} = b_0 + b_1x_1$." + f"It is chained with LaTeX printouts of some matrix multiplication with the numpy arrays above: ${jp.arraytex(x)} * {jp.arraytex(y)} = {jp.arraytex(np.dot(x, y))}$")
 ```
 
 ```{python}

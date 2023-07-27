@@ -58,6 +58,7 @@ def test_all_jupyprints():
         x = _np.array([[10, 100, 200], [8, 9, 77]])
         jupyprint(f"""Hello, let us log this matrix: ${arraytex(x)}$. Here is
                    the logged version: $ln({arraytex(x)}) = {arraytex(_np.log(x).round(2))}$""")
+        jupyprint("Here is some LaTeX $\hat{y} = b_0 + b_1x_1$." + f"It is chained with LaTeX printouts of some matrix multiplication with the numpy arrays above: ${arraytex(x)} * {arraytex(y)} = {arraytex(_np.dot(x, y))}$")
 
         # pandas.DataFrame:
         jupyprint(_pd.DataFrame({'A': _np.repeat('A', 10)}))
