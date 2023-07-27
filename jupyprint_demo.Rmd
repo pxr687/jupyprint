@@ -1,0 +1,89 @@
+---
+jupyter:
+  jupytext:
+    formats: ipynb,Rmd
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.2'
+      jupytext_version: 1.14.5
+  kernelspec:
+    display_name: Python 3 (ipykernel)
+    language: python
+    name: python3
+---
+
+```{python}
+import jupyprint as jp
+import numpy as np
+import pandas as pd
+
+# use jupyprint to add the title and intro!
+jp.jupyprint("# Jupyprint Demo")
+jp.jupyprint("Below are some ways of using jupyprint...")
+```
+
+```{python}
+# strings:
+jp.jupyprint("Hello world!")
+```
+
+```{python}
+# numbers:
+jp.jupyprint(42)
+jp.jupyprint(3.14)
+jp.jupyprint(5 + 3j)  
+```
+
+```{python}
+# LaTex:
+jp.jupyprint("$ \Large \sum{(y_i - \hat{y})^2} $")
+```
+
+```{python}
+# numpy.array (row vector):
+jp.jupyprint(np.array([1, 2, 4]))
+```
+
+```{python}
+# numpy.array (column vector):
+jp.jupyprint(np.array([[1], [2], [4]]))
+```
+
+```{python}
+# numpy.array (matrix):
+jp.jupyprint(np.array([[1, 2, 4], ['A', 'B', 'C']]))
+```
+
+```{python}
+# array with mixed elements
+jp.jupyprint(np.array([10, True, "Hello"], dtype = object)) 
+jp.jupyprint(np.array(['True', 'True', '10', 42, False, 'Hello'], dtype=object))
+```
+
+```{python}
+# arrays chained with f-string
+x = np.array([[10, 100, 200], [8, 9, 77]])
+y = np.array([[1000], [-889], [43]])
+jp.jupyprint(f"${jp.arraytex(x)} * {jp.arraytex(y)} = {jp.arraytex(np.dot(x, y))}$")
+```
+
+```{python}
+# arrays chained with f-string (with booleans)
+x = np.array([[10, 100, 200], [8, 9, 77]])
+y = np.array([[True], [False], [True]])
+jp.jupyprint(f"${jp.arraytex(x)} * {jp.arraytex(y)} = {jp.arraytex(np.dot(x, y))}$")
+```
+
+```{python}
+# arrays chained with f-string and non-LaTeX strings
+x = np.array([[10, 100, 200], [8, 9, 77]])
+jp.jupyprint(f"""Hello, let us log this matrix: ${jp.arraytex(x)}$. Here is
+           the logged version: $ln({jp.arraytex(x)}) = {jp.arraytex(np.log(x).round(2))}$""")
+```
+
+```{python}
+# pandas.DataFrame:
+jp.jupyprint(pd.DataFrame({'A': np.repeat('A', 10),
+                           'B': np.repeat('B', 10)}))
+```
