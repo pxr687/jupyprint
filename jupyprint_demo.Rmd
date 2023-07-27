@@ -1,7 +1,7 @@
 ---
 jupyter:
   jupytext:
-    formats: ipynb,Rmd
+    formats: Rmd,ipynb
     text_representation:
       extension: .Rmd
       format_name: rmarkdown
@@ -14,90 +14,93 @@ jupyter:
 ---
 
 ```{python}
-import jupyprint as jp
+# either import jupytext as jp, then use jp.jupyprint() and jp.arraytex()
+# or use the following:
+from jupyprint import jupyprint, arraytex
+
 import numpy as np
 import pandas as pd
 
 # use jupyprint to add the title and intro!
-jp.jupyprint("# Jupyprint Demo")
-jp.jupyprint("Below are some ways of using jupyprint...")
+jupyprint("# Jupyprint Demo")
+jupyprint("Below are some ways of using jupyprint...")
 ```
 
 ```{python}
 # strings:
-jp.jupyprint("Hello world!")
+jupyprint("Hello world!")
 ```
 
 ```{python}
 # numbers:
-jp.jupyprint(42)
-jp.jupyprint(3.14)
-jp.jupyprint(5 + 3j)  
+jupyprint(42)
+jupyprint(3.14)
+jupyprint(5 + 3j)  
 ```
 
 ```{python}
 # LaTex:
-jp.jupyprint("$ \Large \sum{(y_i - \hat{y})^2} $")
+jupyprint("$ \Large \sum{(y_i - \hat{y})^2} $")
 ```
 
 ```{python}
 # numpy.array (row vector):
-jp.jupyprint(np.array([1, 2, 4]))
+jupyprint(np.array([1, 2, 4]))
 ```
 
 ```{python}
 # numpy.array (column vector):
-jp.jupyprint(np.array([[1], [2], [4]]))
+jupyprint(np.array([[1], [2], [4]]))
 ```
 
 ```{python}
 # numpy.array (matrix):
-jp.jupyprint(np.array([[1, 2, 4], ['A', 'B', 'C']]))
+jupyprint(np.array([[1, 2, 4], ['A', 'B', 'C']]))
 ```
 
 ```{python}
 # array with mixed elements
-jp.jupyprint(np.array([10, True, "Hello"], dtype = object)) 
-jp.jupyprint(np.array(['True', 'True', '10', 42, False, 'Hello'], dtype=object))
+jupyprint(np.array([10, True, "Hello"], dtype = object)) 
+jupyprint(np.array(['True', 'True', '10', 42, False, 'Hello'], dtype=object))
 ```
 
 ```{python}
 # arrays chained with f-string
 x = np.array([[10, 100, 200], [8, 9, 77]])
 y = np.array([[1000], [-889], [43]])
-jp.jupyprint(f"${jp.arraytex(x)} * {jp.arraytex(y)} = {jp.arraytex(np.dot(x, y))}$")
+jupyprint(f"${arraytex(x)} * {arraytex(y)} = {arraytex(np.dot(x, y))}$")
 ```
 
 ```{python}
 # arrays chained with f-string (with booleans)
 x = np.array([[10, 100, 200], [8, 9, 77]])
 y = np.array([[True], [False], [True]])
-jp.jupyprint(f"${jp.arraytex(x)} * {jp.arraytex(y)} = {jp.arraytex(np.dot(x, y))}$")
+jupyprint(f"${arraytex(x)} * {arraytex(y)} = {arraytex(np.dot(x, y))}$")
 ```
 
 ```{python}
 # arrays chained with f-string and non-LaTeX strings
 x = np.array([[10, 100, 200], [8, 9, 77]])
-jp.jupyprint(f"""Hello, let us log this matrix: ${jp.arraytex(x)}$. Here is
-           the logged version: $ln({jp.arraytex(x)}) = {jp.arraytex(np.log(x).round(2))}$""")
-jp.jupyprint("Here is some LaTeX $\hat{y} = b_0 + b_1x_1$." + f"It is chained with LaTeX printouts of some matrix multiplication with the numpy arrays above: ${jp.arraytex(x)} * {jp.arraytex(y)} = {jp.arraytex(np.dot(x, y))}$")
+jupyprint(f"""Hello, let us log this matrix: ${arraytex(x)}$. Here is
+           the logged version: $ln({arraytex(x)}) = {arraytex(np.log(x).round(2))}$""")
+jupyprint("Here is some LaTeX $\hat{y} = b_0 + b_1x_1$." + f"It is chained with LaTeX printouts of some matrix multiplication with the numpy arrays above: ${arraytex(x)} * {arraytex(y)} = {arraytex(np.dot(x, y))}$")
 ```
 
 ```{python}
 # showing symbolic representations of models alongside versions with "live" variables
 
 # linear regression model with symbols
-design_matrix = jp.arraytex(np.array([np.repeat(1, 5), np.repeat("$x_1$", 5), np.repeat("$x_2$", 5)]).T)
+design_matrix = np.array([np.repeat(1, 5), np.repeat("$x_1$", 5), np.repeat("$x_2$", 5)]).T
 
-beta_vector = jp.arraytex(np.array(['$b_'+ str(i) + '$' for i in np.arange(0, 3)]).reshape(3, 1))
+beta_vector = np.array(['$b_'+ str(i) + '$' for i in np.arange(0, 3)]).reshape(3, 1)
 
-y_vector = jp.arraytex(np.array(['$\hat{y_'+ str(i) + '}$' for i in np.arange(1, 6)]).reshape(5, 1))
+y_vector = np.array(['$\hat{y_'+ str(i) + '}$' for i in np.arange(1, 6)]).reshape(5, 1)
 
-jp.jupyprint("# The Linear Model:")
-jp.jupyprint(f"${y_vector} = {design_matrix} * {beta_vector}$")
+jupyprint("# The Linear Model:")
+jupyprint(f"${arraytex(y_vector)} = {arraytex(design_matrix)} * {arraytex(beta_vector)}$")
 
 # linear regression model with "live" variables
-jp.jupyprint("### The linear model with our data and parameters (instead of symbols):")
+jupyprint("### The linear model with our data and parameters (instead of symbols):")
 design_matrix = np.array([np.repeat(1, 5),
                                       np.random.normal(100, 10, 5).round(2),
                                       np.random.poisson(5, 5)]).T
@@ -106,11 +109,11 @@ beta_vector = np.array([1, 3, 0.6]).reshape(3, 1)
 
 y_hat_vector = np.dot(design_matrix, beta_vector).round(2)
 
-jp.jupyprint(f"${jp.arraytex(y_hat_vector)} = {jp.arraytex(design_matrix)} * {jp.arraytex(beta_vector)}$")
+jupyprint(f"${arraytex(y_hat_vector)} = {arraytex(design_matrix)} * {arraytex(beta_vector)}$")
 ```
 
 ```{python}
 # pandas.DataFrame:
-jp.jupyprint(pd.DataFrame({'A': np.repeat('A', 10),
+jupyprint(pd.DataFrame({'A': np.repeat('A', 10),
                            'B': np.repeat('B', 10)}))
 ```
