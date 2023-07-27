@@ -93,7 +93,7 @@ def arraytex(arr):
         if (arr.shape[1] > 1):
             return _matrix(arr)
     
-    # if the input is a column vector (two dimensions, 1 column), display as a
+    # if the input is a column vector (1 column), display as a
     # column vector
     if (len(arr.shape) == 2):
         if (arr.shape[1] == 1):
