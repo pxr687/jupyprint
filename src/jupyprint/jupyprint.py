@@ -1,4 +1,4 @@
-from IPython.display import _Markdown, _display
+from IPython.display import Markdown as _Markdown, display as _display
 import pandas as _pd
 import numpy as _np
 
