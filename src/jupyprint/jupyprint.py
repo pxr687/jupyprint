@@ -6,6 +6,12 @@ import numpy as _np
 # USER FACING FUNCTIONS
 
 def jupyprint(x):
+    """ Jupyter display of built Markdown for value `x`.
+    """
+    _display(to_md(x))
+
+
+def to_md(x):
     """
     Function to print markdown/LaTeX, and render nice looking numpy arrays and
     pandas dataframes, within Jupyter notebooks.
@@ -61,15 +67,15 @@ def jupyprint(x):
     # markdown/LaTeX (will also work for strings with LaTeX syntax e.g. these
     # will be printed as LaTeX)
     if (isinstance(x, (bool, dict, list, str, tuple, int, float, complex))):
-        _display(_Markdown(str(x)))
+        return _Markdown(str(x))
 
     # if input is a numpy array convert to markdown/LaTeX, then display
     elif (isinstance(x, _np.ndarray)):
-        _display(_Markdown("$"+arraytex(x)+"$"))
+        return _Markdown("$"+arraytex(x)+"$")
 
     # if the input is a pandas DataFrame, display it nicely rendered
     elif (isinstance(x, _pd.core.frame.DataFrame)):
-        _display(x)
+        return x
 
 # The functions below are adapted from np2latex: 
 # https://github.com/madrury/np2latex/blob/master/np2latex/np2latex.py
