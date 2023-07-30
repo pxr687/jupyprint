@@ -28,10 +28,6 @@ jupyprint("Below are some ways of using jupyprint...")
 ```
 
 ```{python}
-# ?jupyprint
-```
-
-```{python}
 # strings:
 jupyprint("Hello world!")
 ```
