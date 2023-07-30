@@ -1,4 +1,4 @@
 """ Jupyprint package
 """
 
-from .jupyprint import jupyprint, to_md
+from .jupyprint import jupyprint, to_md, arraytex
