@@ -6,61 +6,89 @@ import numpy as np
 # USER FACING FUNCTIONS
 
 def jupyprint(x):
-    """ Jupyter display of built Markdown for value `x`.
+    """ 
+    Nice-looking Jupyter notebook display for value x. This function will print
+    the value as Markdown/LaTeX if x is of type string, LaTeX string, number 
+    (int, float, complex), boolean, list, dictionary, tuple, or a 1D/2D numpy
+    array. If x is a pandas.DataFrame, it will be rendered as HTML.
+
+    Parameters
+    ----------
+    x : str or int or float or complex or bool or list or dict or tuple or 
+        numpy.ndarray or pandas.DataFrame
+        The input data to be printed. x can be a string, LaTeX string, a number
+        (int, float, complex), a boolean, a list, a dictionary, a tuple, a 1D 
+        numpy array  (row or column vector), a 2D numpy array or a 
+        pandas.DataFrame. Numpy arrays can contain elements of any dtype - bools
+        and strings will be shown as text in LaTeX. If x is a pandas.DataFrame
+        it will be printed in HTML, all other input types will be printed as
+        Markdown/LaTeX.
+
+    Returns
+    -------
+    None
+        It prints input value x as markdown/LaTeX/HTML, which can be rendered in
+        a Jupyter notebook.
+
+    Examples
+    --------
+    Markdown:
+    >>> jupyprint("Hello world!")
+
+    Numbers:
+    >>> jupyprint(42)
+    >>> jupyprint(3.14)
+    >>> jupyprint(5 + 3j)
+
+    LaTex:
+    >>> jupyprint("$ \sum{(y_i - \hat{y})^2} $")
+
+    numpy.array (row vector):
+    >>> import numpy as np
+    >>> jupyprint(np.array([1, 2, 4]))
+
+    numpy.array (column vector):
+    >>> import numpy as np
+    >>> jupyprint(np.array([[1], [2], [4]]))
+
+    numpy.array (matrix):
+    >>> import numpy as np
+    >>> jupyprint(np.array([[1, 2, 4], ['A', 'B', 'C']]))
+
+    pandas.DataFrame:
+    >>> import pandas as pd
+    >>> import numpy as np
+    >>> jupyprint(pd.DataFrame({'A': np.repeat('A', 10)}))
+
+    arrays chained with f-string (in combination with the jupyprint.arraytex() 
+    function - this example also uses numpy.dot):
+    >>> import numpy as np
+    >>> x = np.array([[10, 100, 200], [8, 9, 77]])
+    >>> y = np.array([[1000], [-889], [43]])
+    >>> jupyprint(f"{arraytex(x)} * {arraytex(y)} = {arraytex(np.dot(x, y))}")
     """
     display(to_md(x))
 
 
 def to_md(x):
     """
-    Function to print markdown/LaTeX, and render nice looking numpy arrays and
-    pandas dataframes, within Jupyter notebooks.
+    Build a Markdown object for input value `x`. 
 
     Parameters
     ----------
-    x: thing to be printed in markdown/LaTeX. Can be a string, LaTeX string, a
-       number (int, float, complex), a boolean, a list, a dict, a tuple, a 1D
-       numpy array (row or column vector) or a 2D numpy array. (Numpy arrays
-       can contain elements of any dtype - bools and strings will be shown
-       as text in LaTeX).
+    x : str or int or float or complex or bool or list or dict or tuple or 
+        numpy.ndarray or pandas.DataFrame
+        The input data to be converted to a Markdown object (where necessary
+        for nice-looking printing in a Jupyter notebook e.g. pandas.DataFrame
+        inputs do not need to be converted to Markdown, but other input types
+        do).
 
     Returns
     -------
-    None. It prints x as markdown/LaTeX, which can be rendered in a Jupyter
-    notebook.
-
-    Examples
-    ==================
-
-    Markdown:
-    jupyprint("Hello world!")
-
-    Numbers:
-    jupyprint(42)
-    jupyprint(3.14)
-    jupyprint(5 + 3j)
-
-    LaTex:
-    jupyprint("$ \sum{(y_i - \hat{y})^2} $")
-
-    numpy.array (row vector):
-    jupyprint(np.array([1, 2, 4]))
-
-    numpy.array (column vector):
-    jupyprint(np.array([[1], [2], [4]]))
-
-    numpy.array (matrix):
-    jupyprint(np.array([[1, 2, 4], ['A', 'B', 'C']]))
-
-    pandas.DataFrame:
-    jupyprint(pd.DataFrame({'A': np.repeat('A', 10)}))
-
-    arrays chained with f-string (in combination with the jupyprint.arraytex() 
-    function - this example also uses numpy.dot):
-    x = np.array([[10, 100, 200], [8, 9, 77]])
-    y = np.array([[1000], [-889], [43]])
-    jupyprint(f"{arraytex(x)} * {arraytex(y)} = {arraytex(np.dot(x, y))}")
-
+    IPython.core.display.Markdown object or pandas.DataFrame
+        Returns built Markdown of the input value x, for display in a Jupyter 
+        notebook using the jupyprint() function. Unless x is a pandas.DataFrame,
+        then it will be returned as a pandas.DataFrame.
     """
 
     # if input is a bool, dict, list, string, tuple or number, display  as 

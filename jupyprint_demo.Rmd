@@ -18,12 +18,17 @@ jupyter:
 # or use the following:
 from jupyprint import jupyprint, arraytex
 
+# import other packages
 import numpy as np
 import pandas as pd
 
 # use jupyprint to add the title and intro!
 jupyprint("# Jupyprint Demo")
 jupyprint("Below are some ways of using jupyprint...")
+```
+
+```{python}
+# ?jupyprint
 ```
 
 ```{python}
