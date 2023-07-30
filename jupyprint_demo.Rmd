@@ -101,7 +101,7 @@ jupyprint("# The Linear Model:")
 jupyprint(f"${arraytex(y_vector)} = {arraytex(design_matrix)} * {arraytex(beta_vector)}$")
 
 # linear regression model with "live" variables
-jupyprint("### The linear model with our data and parameters (instead of symbols):")
+jupyprint("### The linear model with 'live' data and parameters (instead of symbols):")
 design_matrix = np.array([np.repeat(1, 5),
                           np.random.normal(100, 10, 5).round(2),
                           np.random.poisson(5, 5)]).T
