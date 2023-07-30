@@ -1,11 +1,17 @@
-from IPython.display import Markdown as _Markdown, display as _display
-import pandas as _pd
-import numpy as _np
+from IPython.display import Markdown, display
+import pandas as pd
+import numpy as np
 
 # ==============================================================================
 # USER FACING FUNCTIONS
 
 def jupyprint(x):
+    """ Jupyter display of built Markdown for value `x`.
+    """
+    display(to_md(x))
+
+
+def to_md(x):
     """
     Function to print markdown/LaTeX, and render nice looking numpy arrays and
     pandas dataframes, within Jupyter notebooks.
@@ -38,21 +44,21 @@ def jupyprint(x):
     jupyprint("$ \sum{(y_i - \hat{y})^2} $")
 
     numpy.array (row vector):
-    jupyprint(_np.array([1, 2, 4]))
+    jupyprint(np.array([1, 2, 4]))
 
     numpy.array (column vector):
-    jupyprint(_np.array([[1], [2], [4]]))
+    jupyprint(np.array([[1], [2], [4]]))
 
     numpy.array (matrix):
-    jupyprint(_np.array([[1, 2, 4], ['A', 'B', 'C']]))
+    jupyprint(np.array([[1, 2, 4], ['A', 'B', 'C']]))
 
     pandas.DataFrame:
-    jupyprint(_pd.DataFrame({'A': _np.repeat('A', 10)}))
+    jupyprint(pd.DataFrame({'A': np.repeat('A', 10)}))
 
     arrays chained with f-string (in combination with the jupyprint.arraytex() 
     function - this example also uses numpy.dot):
-    x = _np.array([[10, 100, 200], [8, 9, 77]])
-    y = _np.array([[1000], [-889], [43]])
+    x = np.array([[10, 100, 200], [8, 9, 77]])
+    y = np.array([[1000], [-889], [43]])
     jupyprint(f"{arraytex(x)} * {arraytex(y)} = {arraytex(np.dot(x, y))}")
 
     """
@@ -61,17 +67,17 @@ def jupyprint(x):
     # markdown/LaTeX (will also work for strings with LaTeX syntax e.g. these
     # will be printed as LaTeX)
     if (isinstance(x, (bool, dict, list, str, tuple, int, float, complex))):
-        _display(_Markdown(str(x)))
+        return Markdown(str(x))
 
     # if input is a numpy array convert to markdown/LaTeX, then display
-    elif (isinstance(x, _np.ndarray)):
-        _display(_Markdown("$"+arraytex(x)+"$"))
+    elif (isinstance(x, np.ndarray)):
+        return Markdown("$"+arraytex(x)+"$")
 
     # if the input is a pandas DataFrame, display it nicely rendered
-    elif (isinstance(x, _pd.core.frame.DataFrame)):
-        _display(x)
+    elif (isinstance(x, pd.core.frame.DataFrame)):
+        return x
 
-# The functions below are adapted from np2latex: 
+# The functions below are adapted from np2latex:
 # https://github.com/madrury/np2latex/blob/master/np2latex/np2latex.py
 
 def arraytex(arr):
@@ -92,7 +98,7 @@ def arraytex(arr):
     if (len(arr.shape) == 2):
         if (arr.shape[1] > 1):
             return _matrix(arr)
-    
+
     # if the input is a column vector (1 column), display as a
     # column vector
     if (len(arr.shape) == 2):
@@ -102,7 +108,7 @@ def arraytex(arr):
     # if the input is a row vector (1 row), display as a row vector
     elif len(arr.shape) == 1:
         return _matrix(arr.reshape(1, -1), end_str="")
-    
+
     # warn user array is too high-dimensional, if this is the case
     else:
         raise ValueError("Array must be 1 or 2 dimensional.")
@@ -113,10 +119,11 @@ def arraytex(arr):
 def _needs_latex_text(el):
     # add LaTex `\text{}` around elements of array, if the element is a string
     # or a bool
-    if isinstance(el, (str, bool, _np.str_, _np.bool_)):
+    if isinstance(el, (str, bool, np.str_, np.bool_)):
         return r'\text{' + str(el) + r'}'
     return el
-    
+
+
 def _matrix(arr, **kwargs):
 
     # force dtype to object, for display (behaves better with booleans)
@@ -127,10 +134,10 @@ def _matrix(arr, **kwargs):
 
     # for elements of the matrix which are strings or bools, make sure the 
     # elements are shown as text in latex
-    _vectorized_needs_latex_text = _np.vectorize(_needs_latex_text, 
+    _vectorized_needs_latex_text = np.vectorize(_needs_latex_text, 
                                                  otypes = [object])
     arr = _vectorized_needs_latex_text(arr)
-    
+
     # get the start and end of the latex matrix syntax
     left = "\\begin{{bmatrix}}{{{}}} ".format("")
     right = " \\end{bmatrix}"
@@ -138,6 +145,7 @@ def _matrix(arr, **kwargs):
     # get the rows of the matrix and join them to the start/end of the matrix
     rows = [_row_f_string(n_cols, **kwargs).format(*row) for row in arr]
     return left + ' '.join(rows) + right
+
 
 def _row_f_string(n_cols, end_str=r" \\"):
     return " & ".join(["{}"]*n_cols) + end_str
