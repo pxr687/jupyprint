@@ -5,12 +5,13 @@ import numpy as np
 # ==============================================================================
 # USER FACING FUNCTIONS
 
-def jupyprint(x):
-    """ 
-    Nice-looking Jupyter notebook display for value x. This function will print
-    the value as Markdown/LaTeX if x is of type string, LaTeX string, number 
-    (int, float, complex), boolean, list, dictionary, tuple, or a 1D/2D numpy
-    array. If x is a pandas.DataFrame, it will be rendered as HTML.
+def jupyprint(x, quote_strings=False):
+    """ Nice-looking Jupyter notebook display for value x.
+
+    This function will display the value as Markdown/LaTeX if `x` is of type
+    string, LaTeX string, number (int, float, complex), boolean, list,
+    dictionary, tuple, or a 1D/2D numpy array. If `x` is a pandas.DataFrame, it
+    will be rendered as HTML.
 
     Parameters
     ----------
@@ -23,6 +24,8 @@ def jupyprint(x):
         and strings will be shown as text in LaTeX. If x is a pandas.DataFrame
         it will be printed in HTML, all other input types will be printed as
         Markdown/LaTeX.
+    quote_strings : {False, True}
+        Whether to add quotes around strings in output.
 
     Returns
     -------
@@ -70,7 +73,7 @@ def jupyprint(x):
     display(to_md(x))
 
 
-def to_md(x):
+def to_md(x, quote_strings=False):
     """
     Build a Markdown object for input value `x`. 
 
@@ -82,6 +85,8 @@ def to_md(x):
         for nice-looking printing in a Jupyter notebook e.g. pandas.DataFrame
         inputs do not need to be converted to Markdown, but other input types
         do).
+    quote_strings : {False, True}
+        Whether to add quotes around strings in output.
 
     Returns
     -------
@@ -90,90 +95,96 @@ def to_md(x):
         notebook using the jupyprint() function. Unless x is a pandas.DataFrame,
         then it will be returned as a pandas.DataFrame.
     """
-
-    # if input is a bool, dict, list, string, tuple or number, display  as 
-    # markdown/LaTeX (will also work for strings with LaTeX syntax e.g. these
-    # will be printed as LaTeX)
-    if (isinstance(x, (bool, dict, list, str, tuple, int, float, complex))):
-        return Markdown(str(x))
-
-    # if input is a numpy array convert to markdown/LaTeX, then display
-    elif (isinstance(x, np.ndarray)):
-        return Markdown("$"+arraytex(x)+"$")
-
-    # if the input is a pandas DataFrame, display it nicely rendered
-    elif (isinstance(x, pd.core.frame.DataFrame)):
-        return x
-
-# The functions below are adapted from np2latex:
-# https://github.com/madrury/np2latex/blob/master/np2latex/np2latex.py
-
-def arraytex(arr):
-    """Convert a 1D or 2D numpy array to latex markdown.
-
-    Parameters
-    ----------
-    arr: array, shape (n, p), (n,) or (1, n)
-        A numpy array.
-
-    Returns
-    -------
-    latex: string
-        A latex string.
-    """
-    # determine if the input is a matrix (two dimensions, more than one column),
-    # display as a matrix
-    if (len(arr.shape) == 2):
-        if (arr.shape[1] > 1):
-            return _matrix(arr)
-
-    # if the input is a column vector (1 column), display as a
-    # column vector
-    if (len(arr.shape) == 2):
-        if (arr.shape[1] == 1):
-            return _matrix(arr.reshape(-1, 1))
-
-    # if the input is a row vector (1 row), display as a row vector
-    elif len(arr.shape) == 1:
-        return _matrix(arr.reshape(1, -1), end_str="")
-
-    # warn user array is too high-dimensional, if this is the case
-    else:
-        raise ValueError("Array must be 1 or 2 dimensional.")
-
-# ==============================================================================
-# HIDDEN FUNCTIONS
-
-def _needs_latex_text(el):
-    # add LaTex `\text{}` around elements of array, if the element is a string
-    # or a bool
-    if isinstance(el, (str, bool, np.str_, np.bool_)):
-        return r'\text{' + str(el) + r'}'
-    return el
+    return Markdowner(quote_strings).to_md()
 
 
-def _matrix(arr, **kwargs):
+class Markdowner:
 
-    # force dtype to object, for display (behaves better with booleans)
-    arr = arr.astype(object)
+    def __init__(self, quote_strings=False):
+        self.quote_strings = quote_strings
 
-    # get the number of columns
-    n_cols = arr.shape[1]
+    def __call__(self, x):
+        # if input is a bool, dict, list, string, tuple or number, display  as
+        # markdown/LaTeX (will also work for strings with LaTeX syntax e.g.
+        # these will be printed as LaTeX)
+        if (isinstance(x, (bool, dict, list, str, tuple, int, float, complex))):
+            return Markdown(str(x))
 
-    # for elements of the matrix which are strings or bools, make sure the 
-    # elements are shown as text in latex
-    _vectorized_needs_latex_text = np.vectorize(_needs_latex_text, 
-                                                 otypes = [object])
-    arr = _vectorized_needs_latex_text(arr)
+        # if input is a numpy array convert to markdown/LaTeX, then display
+        elif (isinstance(x, np.ndarray)):
+            return Markdown(f"${self.arraytex(x)}$")
 
-    # get the start and end of the latex matrix syntax
-    left = "\\begin{{bmatrix}}{{{}}} ".format("")
-    right = " \\end{bmatrix}"
+        # if the input is a pandas DataFrame, display it nicely rendered
+        elif (isinstance(x, pd.core.frame.DataFrame)):
+            return x
 
-    # get the rows of the matrix and join them to the start/end of the matrix
-    rows = [_row_f_string(n_cols, **kwargs).format(*row) for row in arr]
-    return left + ' '.join(rows) + right
+    # The functions below are adapted from np2latex:
+    # https://github.com/madrury/np2latex/blob/master/np2latex/np2latex.py
 
+    def arraytex(self, arr):
+        """Convert a 1D or 2D numpy array to latex markdown.
 
-def _row_f_string(n_cols, end_str=r" \\"):
-    return " & ".join(["{}"]*n_cols) + end_str
+        Parameters
+        ----------
+        arr: array, shape (n, p), (n,) or (1, n)
+            A numpy array.
+
+        Returns
+        -------
+        latex: string
+            A latex string.
+        """
+        # determine if the input is a matrix (two dimensions, more than one column),
+        # display as a matrix
+        if (len(arr.shape) == 2):
+            if (arr.shape[1] > 1):
+                return self._matrix(arr)
+
+        # if the input is a column vector (1 column), display as a
+        # column vector
+        if (len(arr.shape) == 2):
+            if (arr.shape[1] == 1):
+                return self._matrix(arr.reshape(-1, 1))
+
+        # if the input is a row vector (1 row), display as a row vector
+        elif len(arr.shape) == 1:
+            return self._matrix(arr.reshape(1, -1), end_str="")
+
+        # warn user array is too high-dimensional, if this is the case
+        else:
+            raise ValueError("Array must be 1 or 2 dimensional.")
+
+    # ==============================================================================
+    # HIDDEN FUNCTIONS
+
+    def _needs_latex_text(self, el):
+        # add LaTex `\text{}` around elements of array, if the element is a string
+        # or a bool
+        if isinstance(el, (str, bool, np.str_, np.bool_)):
+            return r'\text{' + str(el) + r'}'
+        return el
+
+    def _matrix(self, arr, **kwargs):
+        # force dtype to object, for display (behaves better with booleans)
+        arr = arr.astype(object)
+
+        # get the number of columns
+        n_cols = arr.shape[1]
+
+        # for elements of the matrix which are strings or bools, make sure the
+        # elements are shown as text in latex
+        _vectorized_needs_latex_text = np.vectorize(self._needs_latex_text,
+                                                    otypes = [object])
+        arr = _vectorized_needs_latex_text(arr)
+
+        # get the start and end of the latex matrix syntax
+        left = "\\begin{{bmatrix}}{{{}}} ".format("")
+        right = " \\end{bmatrix}"
+
+        # get the rows of the matrix and join them to the start/end of the matrix
+        rows = [self._row_f_string(n_cols, **kwargs).format(*row)
+                for row in arr]
+        return left + ' '.join(rows) + right
+
+    def _row_f_string(self, n_cols, end_str=r" \\"):
+        return " & ".join(["{}"]*n_cols) + end_str
