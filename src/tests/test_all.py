@@ -1,5 +1,5 @@
-import numpy as _np
-import pandas as _pd
+import numpy as np
+import pandas as pd
 import sys
 import os
 
@@ -26,42 +26,60 @@ def test_all_jupyprints():
         jupyprint("$ \sum{(y_i - \hat{y})^2} $")
 
         # numpy.array (row vector):
-        jupyprint(_np.array([1, 2, 4]))
+        jupyprint(np.array([1, 2, 4]))
 
         # numpy.array (column vector):
-        jupyprint(_np.array([[1], [2], [4]]))
+        jupyprint(np.array([[1], [2], [4]]))
 
         # numpy.array (matrix):
-        jupyprint(_np.array([[1, 2, 4], ['A', 'B', 'C']]))
+        jupyprint(np.array([[1, 2, 4], ['A', 'B', 'C']]))
+        jupyprint(np.array([[1, 2, 4], ['A', 'B', 'C']], dtype = object))
+        jupyprint(np.array([[1, 2, 4], ['A', 'B', 'C']]), quote_strings=False)
+        jupyprint(np.array([[1, 2, 4], ['A', 'B', 'C']], dtype = object), 
+                  quote_strings=False)
 
         # boolean arrays
-        jupyprint(_np.array([True, True, False])) 
-        jupyprint(_np.array([True, True, False], dtype = object)) 
-        jupyprint(_np.array([[True], [True], [False]])) 
-        jupyprint(_np.array([[True], [True], [False]], dtype = object)) 
+        jupyprint(np.array([True, True, False])) 
+        jupyprint(np.array([True, True, False], dtype = object)) 
+        jupyprint(np.array([[True], [True], [False]])) 
+        jupyprint(np.array([[True], [True], [False]], dtype = object)) 
 
         # array with mixed elements
-        jupyprint(_np.array([10, True, "Hello"], dtype = object)) 
-        jupyprint(_np.array(['True', 'True', '10', 42, False, 'Hello'], dtype=object))
+        jupyprint(np.array([10, True, "Hello"], dtype = object)) 
+        jupyprint(np.array(['True', 'True', '10', 42, False, 'Hello'],
+                            dtype=object))
+        jupyprint(np.array([10, True, "Hello"], dtype = object), 
+                  quote_strings= True) 
+        jupyprint(np.array(['True', 'True', '10', 42, False, 'Hello'],
+                            dtype=object), quote_strings=False)
 
         # arrays chained with f-string
-        x = _np.array([[10, 100, 200], [8, 9, 77]])
-        y = _np.array([[1000], [-889], [43]])
-        jupyprint(f"{arraytex(x)} * {arraytex(y)} = {arraytex(_np.dot(x, y))}")
+        x = np.array([[10, 100, 200], [8, 9, 77]])
+        y = np.array([[1000], [-889], [43]])
+        jupyprint(f"{arraytex(x)} * {arraytex(y)} = {arraytex(np.dot(x, y))}")
 
         # arrays chained with f-string (with booleans)
-        x = _np.array([[10, 100, 200], [8, 9, 77]])
-        y = _np.array([[True], [False], [True]])
-        jupyprint(f"{arraytex(x)} * {arraytex(y)} = {arraytex(_np.dot(x, y))}")
+        x = np.array([[10, 100, 200], [8, 9, 77]])
+        y = np.array([[True], [False], [True]])
+        jupyprint(f"{arraytex(x)} * {arraytex(y)} = {arraytex(np.dot(x, y))}")
 
         # arrays chained with f-string and non-LaTeX strings
-        x = _np.array([[10, 100, 200], [8, 9, 77]])
+        x = np.array([[10, 100, 200], [8, 9, 77]])
         jupyprint(f"""Hello, let us log this matrix: ${arraytex(x)}$. Here is
-                   the logged version: $ln({arraytex(x)}) = {arraytex(_np.log(x).round(2))}$""")
-        jupyprint("Here is some LaTeX $\hat{y} = b_0 + b_1x_1$." + f"It is chained with LaTeX printouts of some matrix multiplication with the numpy arrays above: ${arraytex(x)} * {arraytex(y)} = {arraytex(_np.dot(x, y))}$")
+                   the logged version: $ln({arraytex(x)}) = {arraytex(np.log(x).round(2))}$""")
+        jupyprint("Here is some LaTeX $\hat{y} = b_0 + b_1x_1$." + f"It is chained with LaTeX printouts of some matrix multiplication with the numpy arrays above: ${arraytex(x)} * {arraytex(y)} = {arraytex(np.dot(x, y))}$")
+
+        # arrays chained with f-string and non-LaTeX strings
+        x = np.array([[10, "100", 200], [8, False, "77"]], dtype = object)
+        jupyprint(f"""Hello, here is a matrix: ${arraytex(x)}$. Here is another
+                  sentence.""")
+        jupyprint(f"""Hello, here is a matrix: ${arraytex(x, 
+                    quote_strings=False)}$. Here is another
+                  sentence.""")
+
 
         # pandas.DataFrame:
-        jupyprint(_pd.DataFrame({'A': _np.repeat('A', 10)}))
+        jupyprint(pd.DataFrame({'A': np.repeat('A', 10)}))
 
     except Exception as e:
         print(f"An error occurred: {e}")
