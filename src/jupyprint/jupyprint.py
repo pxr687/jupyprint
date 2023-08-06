@@ -103,18 +103,13 @@ def to_md(x, quote_strings=True):
         notebook using the jupyprint() function. Unless x is a pandas.DataFrame,
         then it will be returned as a pandas.DataFrame.
     """
-    # if input is a bool, dict, list, tuple or number, display  as 
+    # if input is a bool, string, dict, list, tuple or number, display  as 
     # markdown/LaTeX (will also work for strings with LaTeX syntax e.g. these 
     # will be printed as LaTeX)
-    if (isinstance(x, (bool, np.bool_, dict, list, tuple, int,
+    if (isinstance(x, (bool, np.bool_, str, np.str_, dict, list, tuple, int,
                        float, complex))):
         return Markdown(str(x)) 
     
-    # if input is a string, print with or without quotes, depending on value of
-    # quote_strings AND whether the string is a latex string
-    elif (isinstance(x, (str, np.str_))):
-        return Markdown(str(x)) 
-
     # if input is a numpy array convert to markdown/LaTeX, then display
     elif (isinstance(x, np.ndarray)):
         return Markdown(f"${arraytex(x, quote_strings=quote_strings)}$")
@@ -122,7 +117,6 @@ def to_md(x, quote_strings=True):
     # if the input is a pandas DataFrame, display it nicely rendered
     elif (isinstance(x, pd.core.frame.DataFrame)):
         return x
-
 
     # The functions below are adapted from np2latex:
     # https://github.com/madrury/np2latex/blob/master/np2latex/np2latex.py
