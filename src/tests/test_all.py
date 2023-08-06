@@ -76,7 +76,22 @@ def test_all_jupyprints():
         jupyprint(f"""Hello, here is a matrix: ${arraytex(x, 
                     quote_strings=False)}$. Here is another
                   sentence.""")
+        
+        # linear regression model with symbols
+        design_matrix = np.array([np.repeat(1, 5), np.repeat("$x_1$", 5), np.repeat("$x_2$", 5)]).T
+        beta_vector = np.array(['$b_'+ str(i) + '$' for i in np.arange(0, 3)]).reshape(3, 1)
+        y_vector = np.array(['$\hat{y_'+ str(i) + '}$' for i in np.arange(1, 6)]).reshape(5, 1)
+        jupyprint("# The Linear Model:")
+        jupyprint(f"${arraytex(y_vector)} = {arraytex(design_matrix)} * {arraytex(beta_vector)}$")
 
+        # linear regression model with "live" variables
+        jupyprint("### The linear model with 'live' data and parameters (instead of symbols):")
+        design_matrix = np.array([np.repeat(1, 5),
+                                np.random.normal(100, 10, 5).round(2),
+                                np.random.poisson(5, 5)]).T
+        beta_vector = np.array([1, 3, 0.6]).reshape(3, 1)
+        y_hat_vector = np.dot(design_matrix, beta_vector).round(2)
+        jupyprint(f"${arraytex(y_hat_vector)} = {arraytex(design_matrix)} * {arraytex(beta_vector)}$")
 
         # pandas.DataFrame:
         jupyprint(pd.DataFrame({'A': np.repeat('A', 10)}))

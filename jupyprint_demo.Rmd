@@ -98,7 +98,7 @@ beta_vector = np.array(['$b_'+ str(i) + '$' for i in np.arange(0, 3)]).reshape(3
 y_vector = np.array(['$\hat{y_'+ str(i) + '}$' for i in np.arange(1, 6)]).reshape(5, 1)
 
 jupyprint("# The Linear Model:")
-jupyprint(f"${arraytex(y_vector)} = {arraytex(design_matrix)} * {arraytex(beta_vector)}$")
+jupyprint(f"${arraytex(y_vector, quote_strings = False)} = {arraytex(design_matrix, quote_strings = False)} * {arraytex(beta_vector, quote_strings = False)}$")
 
 # linear regression model with "live" variables
 jupyprint("### The linear model with 'live' data and parameters (instead of symbols):")
