@@ -226,11 +226,11 @@ def _needs_latex_text(el, quote_strings=True, strings_in_typefont=True):
     
     elif isinstance(el, (str, np.str_)) and (quote_strings == True) \
         and (strings_in_typefont == True):
-        return r"{\tt'" + str(el).replace(" ", "~") + r"'}"
+        return r"{\tt'" + str(el).replace(" ", "~~") + r"'}"
     
     elif isinstance(el, (str, np.str_)) and (quote_strings == False) \
         and (strings_in_typefont == True):
-        return r'{\tt ' + str(el).replace(" ", "~") + r'}'
+        return r'{\tt ' + str(el).replace(" ", "~~") + r'}'
     
     elif isinstance(el, (str, np.str_)) and (quote_strings == True) \
         and (strings_in_typefont == False):
