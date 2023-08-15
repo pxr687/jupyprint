@@ -6,7 +6,7 @@ jupyter:
       extension: .Rmd
       format_name: rmarkdown
       format_version: '1.2'
-      jupytext_version: 1.14.5
+      jupytext_version: 1.14.6
   kernelspec:
     display_name: Python 3 (ipykernel)
     language: python
@@ -98,7 +98,11 @@ beta_vector = np.array(['$b_'+ str(i) + '$' for i in np.arange(0, 3)]).reshape(3
 y_vector = np.array(['$\hat{y_'+ str(i) + '}$' for i in np.arange(1, 6)]).reshape(5, 1)
 
 jupyprint("# The Linear Model:")
-jupyprint(f"${arraytex(y_vector, quote_strings = False)} = {arraytex(design_matrix, quote_strings = False)} * {arraytex(beta_vector, quote_strings = False)}$")
+jupyprint(f"${arraytex(y_vector, contains_latex=True)} = {arraytex(design_matrix, contains_latex=True)} * {arraytex(beta_vector, contains_latex=True)}$")
+
+jupyprint("Testing with a mixed y vector, containing numbers AND latex strings...")
+test_y_vector = np.append(y_vector[0:2], [3,4,5]).reshape(5, 1)
+jupyprint(f"${arraytex(test_y_vector, contains_latex=True)} = {arraytex(design_matrix, contains_latex=True)} * {arraytex(beta_vector, contains_latex=True)}$")
 
 # linear regression model with "live" variables
 jupyprint("### The linear model with 'live' data and parameters (instead of symbols):")

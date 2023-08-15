@@ -127,7 +127,8 @@ def to_md(x, quote_strings=True, strings_in_typefont=True):
     # The functions below are adapted from np2latex:
     # https://github.com/madrury/np2latex/blob/master/np2latex/np2latex.py
 
-def arraytex(arr, quote_strings=True, strings_in_typefont=True):
+def arraytex(arr, quote_strings=True, strings_in_typefont=True, 
+             contains_latex=False):
     """Convert a 1D or 2D numpy array to latex markdown.
 
     Parameters
@@ -141,11 +142,24 @@ def arraytex(arr, quote_strings=True, strings_in_typefont=True):
     strings_in_typefont : {False, True}
         Whether to show strings in "typewriter" font. Default is True.
 
+    contains_latex  : {False, True}
+        If the array contains LaTeX strings, `contains_latex` should be set to
+        True. This will ensure that LaTeX elements render correctly, by
+        overriding `quote_strings` and `strings_in_typefont`. Alternatively,
+        `quote_strings` and `strings_in_typefont` can both be set to False to
+        ensure proper rendering of latex elements - this is what 
+        `contains_latex` does behind the scenes...
+
     Returns
     -------
     latex: string
         A latex string.
     """
+    # override other arguments, if contains_latex == True
+    if contains_latex == True:
+        quote_strings = False
+        strings_in_typefont = False
+
     # determine if the input is a matrix (two dimensions, more than one column),
     # display as a matrix
     if (len(arr.shape) == 2):
