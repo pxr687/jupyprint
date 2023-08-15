@@ -10,6 +10,19 @@ sys.path.append(package_dir)
 
 from jupyprint import jupyprint, arraytex
 
+def loop_n_print(to_loop_over, name_of_thing):
+    "Loop over list of arrays and print with all combinations of jupyptiny args."
+    # use a loop to test with all combinations of optional arguments
+    for arr in to_loop_over:
+        jupyprint(f"""Here is a(n) {name_of_thing}, jupyprinted with default settings:""")
+        jupyprint(arr)
+    
+        for param1 in [True, False]:
+            for param2 in [True, False]:
+                jupyprint(f"""Here is a(n) {name_of_thing}, jupyprinted with
+                        `quote_strings={param1}` and `strings_in_typefont={param2}`:""")
+                jupyprint(arr, quote_strings=param1, strings_in_typefont=param2)
+
 def test_all_jupyprints():
     """Test all intended jupyprint inputs and outputs.
     """
@@ -42,88 +55,38 @@ def test_all_jupyprints():
 
         # ======================================================================
         # numpy.array (matrix):
-
         mixed_array = np.array([[1, 2, 4], ['A', 'B', 'C']])
         mixed_array_object_dtype = np.array([[1, 2, 4], ['A', 'B', 'C']],
                                              dtype = object)
-
-        jupyprint("Here are some arrays, with jupyprinted with default settings:")
-        jupyprint(mixed_array)
-        jupyprint(mixed_array_object_dtype)
-
-        jupyprint("Here is an array, with jupyprinted with `quote_strings=False`:")
-        jupyprint(mixed_array, quote_strings=False)
-        jupyprint(mixed_array_object_dtype, quote_strings=False)
-
-        jupyprint("Here is an array, with jupyprinted with `strings_in_typefont=False`:")
-        jupyprint(mixed_array, strings_in_typefont=False)
-        jupyprint(mixed_array_object_dtype, strings_in_typefont=False)
-
-        jupyprint("""Here is an array, with jupyprinted with 
-                  `quote_strings=False` and `strings_in_typefont=True`:""")
-        jupyprint(mixed_array, quote_strings=False, strings_in_typefont=True)
-        jupyprint(mixed_array_object_dtype, quote_strings=False, strings_in_typefont=True)
+        to_loop_over = [mixed_array, mixed_array_object_dtype]
         
-        jupyprint("""Here is an array, with jupyprinted with 
-                  `quote_strings=False` and `strings_in_typefont=False`:""")
-        jupyprint(mixed_array, quote_strings=False, strings_in_typefont=False)
-        jupyprint(mixed_array_object_dtype, quote_strings=False, strings_in_typefont=False)
-        
+        # use a loop to test with all combinations of optional arguments
+        loop_n_print(to_loop_over, "array")
+
         # ======================================================================
         # boolean numpy.arrays
 
         boolean_row_vector = np.array([True, True, False])
         boolean_row_vector_object_dtype = np.array([True, True, False],
                                                    dtype = object)
-        boolean_column_vec
+        boolean_column_vec = np.array([[True], [True], [False]])
+        boolean_column_vec_object_dtype = np.array([[True], [True], [False]], dtype = object)
 
-
-
-        jupyprint("Here are some arrays containing booleans:")
-        jupyprint() 
-        jupyprint() 
-        jupyprint() 
-        jupyprint(np.array([[True], [True], [False]], dtype = object))
-        jupyprint("Boolean array, `quote_strings=False`:")
-        jupyprint(np.array([True, True, False]), quote_strings=False)
-        jupyprint("Boolean array, `strings_in_typefont=False`:")
-        jupyprint(np.array([True, True, False]), strings_in_typefont=False)
-        jupyprint("Boolean array, `quote_strings=False` and `strings_in_typefont=False`:")
-        jupyprint(np.array([True, True, False]), quote_strings=False, \
-                  strings_in_typefont=False)
-        jupyprint("Boolean array, `quote_strings=False` and `strings_in_typefont=True`:")
-        jupyprint(np.array([True, True, False]), quote_strings=False, \
-                  strings_in_typefont=True)
-        jupyprint("Boolean array, `quote_strings=True` and `strings_in_typefont=False`:")
-        jupyprint(np.array([True, True, False]), quote_strings=True, \
-                  strings_in_typefont=False)
-        jupyprint(np.array([True, True, False], dtype = object)) 
-        jupyprint(np.array([[True], [True], [False]])) 
-        jupyprint(np.array([[True], [True], [False]], dtype = object)) 
-        jupyprint(np.array([[True], [True], [False]]), quote_strings=False)
-        jupyprint(np.array([[True], [True], [False]]), strings_in_typefont=False)
-        jupyprint(np.array([[True], [True], [False]]), quote_strings=False, \
-                  strings_in_typefont=False)
-        jupyprint(np.array([[True], [True], [False]]), quote_strings=False, \
-                  strings_in_typefont=True)
-        jupyprint(np.array([[True], [True], [False]]), quote_strings=True, \
-                  strings_in_typefont=False)
+        to_loop_over = [boolean_row_vector, boolean_row_vector_object_dtype,
+                         boolean_column_vec, boolean_column_vec_object_dtype]
+        
+        loop_n_print(to_loop_over, "boolean array")
 
         # ======================================================================
         # numpy.arrays with mixed elements
-        jupyprint(np.array([10, True, "Hello"], dtype = object)) 
-        jupyprint(np.array(['True', 'True', '10', 42, False, 'Hello'],
-                            dtype=object))
-        jupyprint(np.array([10, True, "Hello"], dtype = object), 
-                  quote_strings= True) 
-        jupyprint(np.array(['True', 'True', '10', 42, False, 'Hello'],
-                            dtype=object), quote_strings=False)
-        jupyprint(np.array(['True', 'True', '10', 42, False, 'Hello'],
-                            dtype=object), quote_strings=False, 
-                            strings_in_typefont=False)
-        jupyprint(np.array(['True', 'True', '10', 42, False, 'Hello'],
-                            dtype=object), quote_strings=False, 
-                            strings_in_typefont=True)
+        arr_mixed = np.array(['True', 'True', '10', 42, False,
+                                            'Hello'])
+        arr_mixed_dtype_object = np.array(['True', 'True', '10', 42, False,
+                                            'Hello'], dtype=object)
+        
+        to_loop_over = [arr_mixed, arr_mixed_dtype_object]
+
+        loop_n_print(to_loop_over, "mixed element array")
 
         # ======================================================================
         # arrays chained with f-string
