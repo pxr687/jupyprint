@@ -100,10 +100,6 @@ y_vector = np.array(['$\hat{y_'+ str(i) + '}$' for i in np.arange(1, 6)]).reshap
 jupyprint("# The Linear Model:")
 jupyprint(f"${arraytex(y_vector, contains_latex=True)} = {arraytex(design_matrix, contains_latex=True)} * {arraytex(beta_vector, contains_latex=True)}$")
 
-jupyprint("Testing with a mixed y vector, containing numbers AND latex strings...")
-test_y_vector = np.append(y_vector[0:2], [3,4,5]).reshape(5, 1)
-jupyprint(f"${arraytex(test_y_vector, contains_latex=True)} = {arraytex(design_matrix, contains_latex=True)} * {arraytex(beta_vector, contains_latex=True)}$")
-
 # linear regression model with "live" variables
 jupyprint("### The linear model with 'live' data and parameters (instead of symbols):")
 design_matrix = np.array([np.repeat(1, 5),
