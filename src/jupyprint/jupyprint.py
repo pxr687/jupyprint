@@ -5,7 +5,7 @@ import numpy as np
 # ==============================================================================
 # USER FACING FUNCTIONS
 
-def jupyprint(x, quote_strings=True):
+def jupyprint(x, quote_strings=True, strings_in_typefont=True):
     """ Nice-looking Jupyter notebook display for value x.
 
     This function will display the value as Markdown/LaTeX if `x` is of type
@@ -78,9 +78,10 @@ def jupyprint(x, quote_strings=True):
     """
 
     # jupyprint the input
-    display(to_md(x, quote_strings=quote_strings))
+    display(to_md(x, quote_strings=quote_strings, 
+                  strings_in_typefont=strings_in_typefont))
 
-def to_md(x, quote_strings=True):
+def to_md(x, quote_strings=True, strings_in_typefont=True):
     """
     Build a Markdown object for input value `x`. 
 
@@ -112,7 +113,7 @@ def to_md(x, quote_strings=True):
     
     # if input is a numpy array convert to markdown/LaTeX, then display
     elif (isinstance(x, np.ndarray)):
-        return Markdown(f"${arraytex(x, quote_strings=quote_strings)}$")
+        return Markdown(f"${arraytex(x, quote_strings=quote_strings, strings_in_typefont=strings_in_typefont)}$")
 
     # if the input is a pandas DataFrame, display it nicely rendered
     elif (isinstance(x, pd.core.frame.DataFrame)):
@@ -121,7 +122,7 @@ def to_md(x, quote_strings=True):
     # The functions below are adapted from np2latex:
     # https://github.com/madrury/np2latex/blob/master/np2latex/np2latex.py
 
-def arraytex(arr, quote_strings=True):
+def arraytex(arr, quote_strings=True, strings_in_typefont=True):
     """Convert a 1D or 2D numpy array to latex markdown.
 
     Parameters
@@ -141,17 +142,20 @@ def arraytex(arr, quote_strings=True):
     # display as a matrix
     if (len(arr.shape) == 2):
         if (arr.shape[1] > 1):
-            return _matrix(arr, quote_strings=quote_strings)
+            return _matrix(arr, quote_strings=quote_strings, 
+            strings_in_typefont=strings_in_typefont)
 
     # if the input is a column vector (1 column), display as a
     # column vector
     if (len(arr.shape) == 2):
         if (arr.shape[1] == 1):
-            return _matrix(arr.reshape(-1, 1), quote_strings=quote_strings)
+            return _matrix(arr.reshape(-1, 1), quote_strings=quote_strings, 
+            strings_in_typefont=strings_in_typefont)
 
     # if the input is a row vector (1 row), display as a row vector
     elif len(arr.shape) == 1:
         return _matrix(arr.reshape(1, -1), quote_strings=quote_strings,
+        strings_in_typefont=strings_in_typefont,
                         end_string="")
 
     # warn user array is too high-dimensional, if this is the case
@@ -161,7 +165,8 @@ def arraytex(arr, quote_strings=True):
 # ==============================================================================
 # HIDDEN FUNCTIONS
 
-def _matrix(arr, quote_strings=True, end_string=r" \\"):
+def _matrix(arr, quote_strings=True, strings_in_typefont=True, 
+            end_string=r" \\"):
 
     # get the number of columns
     n_cols = arr.shape[1]
@@ -175,7 +180,9 @@ def _matrix(arr, quote_strings=True, end_string=r" \\"):
     # for elements of the matrix which are strings or bools, make sure the
     # elements are shown as text in latex
     flattened_array = np.array([_needs_latex_text(el, \
-                        quote_strings=quote_strings) for el in flattened_array])
+                        quote_strings=quote_strings,
+                        strings_in_typefont=strings_in_typefont) \
+                        for el in flattened_array])
     
     # reshape to shape of original array
     arr = flattened_array.reshape(original_shape)
@@ -189,16 +196,26 @@ def _matrix(arr, quote_strings=True, end_string=r" \\"):
             for row in arr]
     return left + ' '.join(rows) + right
 
-def _needs_latex_text(el, quote_strings=True):
+def _needs_latex_text(el, quote_strings=True, strings_in_typefont=True):
     # add LaTex `\text{}` around elements of array, if the element is a 
     # string or a bool
     if isinstance(el, (bool, np.bool_)):
         return r'\text{' + str(el) + r'}'
     
-    elif isinstance(el, (str, np.str_)) and (quote_strings == True):
-        return r"\text{`" + str(el) + r"'}"
+    elif isinstance(el, (str, np.str_)) and (quote_strings == True) \
+        and (strings_in_typefont == True):
+        return r"{\tt'" + str(el) + r"'}"
     
-    elif isinstance(el, (str, np.str_)) and (quote_strings == False):
+    elif isinstance(el, (str, np.str_)) and (quote_strings == False) \
+        and (strings_in_typefont == True):
+        return r'{\tt ' + str(el) + r'}'
+    
+    elif isinstance(el, (str, np.str_)) and (quote_strings == True) \
+        and (strings_in_typefont == False):
+        return r"\text{''" + str(el) + r"''}"
+    
+    elif isinstance(el, (str, np.str_)) and (quote_strings == False) \
+        and (strings_in_typefont == False):
         return r'\text{' + str(el) + r'}'
     
     else:
