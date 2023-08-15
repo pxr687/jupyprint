@@ -28,7 +28,10 @@ def jupyprint(x, quote_strings=True, strings_in_typefont=True):
         be printed as Markdown/LaTeX.
     quote_strings : {False, True}
         Whether to add quotes around strings in output, where the output is a
-        vector or matrix.
+        vector or matrix. Default is True.
+    strings_in_typefont : {False, True}
+        Whether to show strings in "typewriter" font, where the output is a
+        vector or matrix. Default is True.
 
     Returns
     -------
@@ -76,7 +79,6 @@ def jupyprint(x, quote_strings=True, strings_in_typefont=True):
     >>> y = np.array([[1000], [-889], [43]])
     >>> jupyprint(f"{arraytex(x)} * {arraytex(y)} = {arraytex(np.dot(x, y))}")
     """
-
     # jupyprint the input
     display(to_md(x, quote_strings=quote_strings, 
                   strings_in_typefont=strings_in_typefont))
@@ -96,6 +98,9 @@ def to_md(x, quote_strings=True, strings_in_typefont=True):
     quote_strings : {False, True}
         Whether to add quotes around strings in output, where the output is a
         vector or matrix.
+    strings_in_typefont : {False, True}
+        Whether to show strings in "typewriter" font, where the output is a
+        vector or matrix. Default is True.
 
     Returns
     -------
@@ -131,7 +136,10 @@ def arraytex(arr, quote_strings=True, strings_in_typefont=True):
         A numpy array.
     
     quote_strings : {False, True}
-        Whether to add quotes around strings in output.
+        Whether to add quotes around strings in output. Default is True.
+    
+    strings_in_typefont : {False, True}
+        Whether to show strings in "typewriter" font. Default is True.
 
     Returns
     -------

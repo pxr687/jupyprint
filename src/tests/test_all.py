@@ -70,7 +70,8 @@ def test_all_jupyprints():
         boolean_row_vector_object_dtype = np.array([True, True, False],
                                                    dtype = object)
         boolean_column_vec = np.array([[True], [True], [False]])
-        boolean_column_vec_object_dtype = np.array([[True], [True], [False]], dtype = object)
+        boolean_column_vec_object_dtype = np.array([[True], [True], [False]],
+                                                    dtype = object)
 
         to_loop_over = [boolean_row_vector, boolean_row_vector_object_dtype,
                          boolean_column_vec, boolean_column_vec_object_dtype]
@@ -89,7 +90,7 @@ def test_all_jupyprints():
         loop_n_print(to_loop_over, "mixed element array")
 
         # ======================================================================
-        # arrays chained with f-string
+        # numerical  arrays chained with f-string
         x = np.array([[10, 100, 200], [8, 9, 77]])
         y = np.array([[1000], [-889], [43]])
 
@@ -97,16 +98,23 @@ def test_all_jupyprints():
 
         to_loop_over = [string_1]
 
-        loop_n_print(to_loop_over, "string containing arrays chained with f-string")
+        loop_n_print(to_loop_over,
+                    "string containing numerical arrays chained with f-string")
        
         # ======================================================================
         # arrays chained with f-string (with booleans)
         x = np.array([[10, 100, 200], [8, 9, 77]])
         y = np.array([[True], [False], [True]])
-        jupyprint(f"{arraytex(x)} * {arraytex(y)} = {arraytex(np.dot(x, y))}")
+
+        string_2 = f"{arraytex(x)} * {arraytex(y)} = {arraytex(np.dot(x, y))}"
+
+        to_loop_over = [string_2]
+
+        loop_n_print(to_loop_over, 
+                     "string containing numerical/boolean arrays chained with f-string")
 
         # ======================================================================
-        # arrays chained with f-string and non-LaTeX strings
+        # numerical arrays chained with f-string and non-LaTeX strings
         x = np.array([[10, 100, 200], [8, 9, 77]])
 
         chain_string_1 = f"""Hello, let us log this matrix: ${arraytex(x)}$. Here is
@@ -115,23 +123,36 @@ def test_all_jupyprints():
 
         to_loop_over = [chain_string_1, chain_string_2]
 
-        loop_n_print(to_loop_over, "string containing arrays chained with f-string and non-LaTeX strings")
+        loop_n_print(to_loop_over, 
+                     "string containing numerical arrays chained with f-string and non-LaTeX strings")
 
         # ======================================================================
-        # arrays chained with f-string and non-LaTeX strings
+        # mixed arrays chained with f-string and non-LaTeX strings
         x = np.array([[10, "100", 200], [8, False, "77"]], dtype = object)
-        jupyprint(f"""Hello, here is a matrix: ${arraytex(x)}$. Here is another
-                  sentence.""")
-        jupyprint(f"""Hello, here is a matrix: ${arraytex(x, 
+
+        chain_string_3 = f"""Hello, here is a matrix: ${arraytex(x)}$. Here is another
+                  sentence."""
+
+        chain_string_4 = f"""Hello, here is a matrix: ${arraytex(x, 
                     quote_strings=False)}$. Here is another
-                  sentence.""")
+                  sentence."""
+        
+        to_loop_over = [chain_string_3, chain_string_4]
+
+        loop_n_print(to_loop_over, 
+                     "string containing mixed arrays chained with f-string and non-LaTeX strings")
         # ======================================================================
         # linear regression model with symbols
         design_matrix = np.array([np.repeat(1, 5), np.repeat("$x_1$", 5), np.repeat("$x_2$", 5)]).T
         beta_vector = np.array(['$b_'+ str(i) + '$' for i in np.arange(0, 3)]).reshape(3, 1)
         y_vector = np.array(['$\hat{y_'+ str(i) + '}$' for i in np.arange(1, 6)]).reshape(5, 1)
         jupyprint("# The Linear Model:")
-        jupyprint(f"${arraytex(y_vector)} = {arraytex(design_matrix)} * {arraytex(beta_vector)}$")
+        lin_string = f"${arraytex(y_vector)} = {arraytex(design_matrix)} * {arraytex(beta_vector)}$"
+        
+        to_loop_over = [lin_string]
+
+        loop_n_print(to_loop_over, 
+                     "the linear model (in symbolic form)")
 
         # ======================================================================
         # linear regression model with "live" variables
@@ -141,7 +162,13 @@ def test_all_jupyprints():
                                 np.random.poisson(5, 5)]).T
         beta_vector = np.array([1, 3, 0.6]).reshape(3, 1)
         y_hat_vector = np.dot(design_matrix, beta_vector).round(2)
-        jupyprint(f"${arraytex(y_hat_vector)} = {arraytex(design_matrix)} * {arraytex(beta_vector)}$")
+
+        lin_string_2 = f"${arraytex(y_hat_vector)} = {arraytex(design_matrix)} * {arraytex(beta_vector)}$"
+        
+        to_loop_over = [lin_string_2]
+
+        loop_n_print(to_loop_over, 
+                     "the linear model (with live variables)")
 
         # ======================================================================
         # pandas.DataFrame:
