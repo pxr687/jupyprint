@@ -141,7 +141,7 @@ def test_all_jupyprints():
 
         # ======================================================================
         # mixed arrays chained with f-string and non-LaTeX strings
-        x = np.array([[10, "100", 200], [8, False, "77"]], dtype = object)
+        x = np.array([[10, "100", 200], [8, False, "string with more than one word!"]], dtype = object)
 
         name_of_thing = " mixed arrays chained with f-string and non-LaTeX strings"
 
