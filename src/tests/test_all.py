@@ -92,8 +92,13 @@ def test_all_jupyprints():
         # arrays chained with f-string
         x = np.array([[10, 100, 200], [8, 9, 77]])
         y = np.array([[1000], [-889], [43]])
-        jupyprint(f"{arraytex(x)} * {arraytex(y)} = {arraytex(np.dot(x, y))}")
 
+        string_1 = f"{arraytex(x)} * {arraytex(y)} = {arraytex(np.dot(x, y))}"
+
+        to_loop_over = [string_1]
+
+        loop_n_print(to_loop_over, "string containing arrays chained with f-string")
+       
         # ======================================================================
         # arrays chained with f-string (with booleans)
         x = np.array([[10, 100, 200], [8, 9, 77]])
