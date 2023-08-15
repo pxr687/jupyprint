@@ -11,7 +11,7 @@ sys.path.append(package_dir)
 from jupyprint import jupyprint, arraytex
 
 def loop_n_print(to_loop_over, name_of_thing):
-    "Loop over list of arrays and print with all combinations of jupyptiny args."
+    "Loop over list of arrays and print with all combinations of jupyprint args."
     for arr in to_loop_over:
         jupyprint(f"""Here is a(n) {name_of_thing}, jupyprinted with default settings:""")
         jupyprint(arr)
