@@ -103,9 +103,14 @@ def test_all_jupyprints():
         # ======================================================================
         # arrays chained with f-string and non-LaTeX strings
         x = np.array([[10, 100, 200], [8, 9, 77]])
-        jupyprint(f"""Hello, let us log this matrix: ${arraytex(x)}$. Here is
-                   the logged version: $ln({arraytex(x)}) = {arraytex(np.log(x).round(2))}$""")
-        jupyprint("Here is some LaTeX $\hat{y} = b_0 + b_1x_1$." + f"It is chained with LaTeX printouts of some matrix multiplication with the numpy arrays above: ${arraytex(x)} * {arraytex(y)} = {arraytex(np.dot(x, y))}$")
+
+        chain_string_1 = f"""Hello, let us log this matrix: ${arraytex(x)}$. Here is
+                   the logged version: $ln({arraytex(x)}) = {arraytex(np.log(x).round(2))}$"""
+        chain_string_2 = "Here is some LaTeX $\hat{y} = b_0 + b_1x_1$." + f"It is chained with LaTeX printouts of some matrix multiplication with the numpy arrays above: ${arraytex(x)} * {arraytex(y)} = {arraytex(np.dot(x, y))}$"
+
+        to_loop_over = [chain_string_1, chain_string_2]
+
+        loop_n_print(to_loop_over, "string containing arrays chained with f-string and non-LaTeX strings")
 
         # ======================================================================
         # arrays chained with f-string and non-LaTeX strings
