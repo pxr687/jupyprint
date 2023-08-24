@@ -28,20 +28,20 @@ jupyprint("Below are some ways of using jupyprint...")
 ```
 
 ```{python}
-# strings:
+# strings (printed as markdown):
 jupyprint("Hello world!")
 ```
 
 ```{python}
-# numbers:
+# numbers (printed as markdown):
 jupyprint(42)
 jupyprint(3.14)
 jupyprint(5 + 3j)  
 ```
 
 ```{python}
-# LaTex:
-jupyprint("$ \Large \sum{(y_i - \hat{y})^2} $")
+# LaTeX strings:
+jupyprint("$ \Large \\frac{\sum{(y_i - \hat{y_i})^2}}{n} $")
 ```
 
 ```{python}
