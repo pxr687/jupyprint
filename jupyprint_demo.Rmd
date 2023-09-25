@@ -1,0 +1,120 @@
+---
+jupyter:
+  jupytext:
+    formats: ipynb,Rmd
+    text_representation:
+      extension: .Rmd
+      format_name: rmarkdown
+      format_version: '1.2'
+      jupytext_version: 1.14.5
+  kernelspec:
+    display_name: Python 3 (ipykernel)
+    language: python
+    name: python3
+---
+
+```{python}
+# either import jupytext as jp, then use jp.jupyprint() and jp.arraytex()
+# or use the following:
+from jupyprint import jupyprint, arraytex
+
+# import other packages
+import numpy as np
+import pandas as pd
+
+# use jupyprint to add the title and intro!
+jupyprint("# Jupyprint Demo")
+jupyprint("Below are some ways of using jupyprint...")
+```
+
+```{python}
+# strings (printed as markdown):
+jupyprint("Hello world!")
+```
+
+```{python}
+# numbers (printed as markdown):
+jupyprint(42)
+jupyprint(3.14)
+jupyprint(5 + 3j)  
+```
+
+```{python}
+# LaTeX strings:
+jupyprint("$ \Large \\frac{\sum{(y_i - \hat{y_i})^2}}{n} $")
+```
+
+```{python}
+# numpy.array (row vector):
+jupyprint(np.array([1, 2, 4]))
+```
+
+```{python}
+# numpy.array (column vector):
+jupyprint(np.array([[1], [2], [4]]))
+```
+
+```{python}
+# numpy.array (matrix):
+jupyprint(np.array([[1, 2, 4], ['A', 'B', 'C']]))
+```
+
+```{python}
+# array with mixed elements
+jupyprint(np.array([10, True, "Hello"], dtype = object)) 
+jupyprint(np.array(['True', 'True', '10', 42, False, 'String with multiple words!'], dtype=object))
+```
+
+```{python}
+# arrays chained with f-string
+x = np.array([[10, 100, 200], [8, 9, 77]])
+y = np.array([[1000], [-889], [43]])
+jupyprint(f"${arraytex(x)} * {arraytex(y)} = {arraytex(np.dot(x, y))}$")
+```
+
+```{python}
+# arrays chained with f-string (with booleans)
+x = np.array([[10, 100, 200], [8, 9, 77]])
+y = np.array([[True], [False], [True]])
+jupyprint(f"${arraytex(x)} * {arraytex(y)} = {arraytex(np.dot(x, y))}$")
+```
+
+```{python}
+# arrays chained with f-string and non-LaTeX strings
+x = np.array([[10, 100, 200], [8, 9, 77]])
+jupyprint(f"""Hello, let us log this matrix: ${arraytex(x)}$. Here is
+           the logged version: $ln({arraytex(x)}) = {arraytex(np.log(x).round(2))}$""")
+jupyprint("Here is some LaTeX $\hat{y} = b_0 + b_1x_1$." + f"It is chained with LaTeX printouts of some matrix multiplication with the numpy arrays above: ${arraytex(x)} * {arraytex(y)} = {arraytex(np.dot(x, y))}$")
+```
+
+```{python}
+# showing symbolic representations of models alongside versions with "live" variables
+
+# linear regression model with symbols
+design_matrix = np.array([np.repeat(1, 5), np.repeat("$x_1$", 5), np.repeat("$x_2$", 5)]).T
+
+beta_vector = np.array(['$b_'+ str(i) + '$' for i in np.arange(0, 3)]).reshape(3, 1)
+
+y_vector = np.array(['$\hat{y_'+ str(i) + '}$' for i in np.arange(1, 6)]).reshape(5, 1)
+
+jupyprint("# The Linear Model:")
+jupyprint(f"${arraytex(y_vector, contains_latex=True)} = {arraytex(design_matrix, contains_latex=True)} * {arraytex(beta_vector, contains_latex=True)}$")
+
+# linear regression model with "live" variables
+jupyprint("### The linear model with 'live' data and parameters (instead of symbols):")
+design_matrix = np.array([np.repeat(1, 5),
+                          np.random.normal(100, 10, 5).round(2),
+                          np.random.poisson(5, 5)]).T
+
+beta_vector = np.array([1, 3, 0.6]).reshape(3, 1)
+
+y_hat_vector = np.dot(design_matrix, beta_vector).round(2)
+
+jupyprint(f"${arraytex(y_hat_vector)} = {arraytex(design_matrix)} * {arraytex(beta_vector)}$")
+```
+
+```{python}
+# pandas.DataFrame:
+jupyprint(pd.DataFrame({'A': np.repeat('A', 10),
+                           'B': np.repeat('B', 10)}))
+```
