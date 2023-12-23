@@ -8,12 +8,12 @@ dataframes.
 
 See `jupyprint_demo.ipynb` for a demo. Here are some screenshots from the demo:
 
-![alt_text](https://github.com/pxr687/jupyprint/demo_1.png)
+![alt_text](https://github.com/pxr687/jupyprint/blob/main/demo_1.png)
 
-![alt_text](https://github.com/pxr687/jupyprint/demo_2.png)
+![alt_text](https://github.com/pxr687/jupyprint/blob/main/demo_2.png)
 
-![alt_text](https://github.com/pxr687/jupyprint/demo_3.png)
+![alt_text](https://github.com/pxr687/jupyprint/blob/main/demo_3.png)
 
-![alt_text](https://github.com/pxr687/jupyprint/demo_4.png)
+![alt_text](https://github.com/pxr687/jupyprint/blob/main/demo_4.png)
 
-![alt_text](https://github.com/pxr687/jupyprint/demo_5.png)
+![alt_text](https://github.com/pxr687/jupyprint/blob/main/demo_5.png)
