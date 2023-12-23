@@ -2,9 +2,11 @@
 
 A simple python package to print markdown and LaTeX equations in Jupyter notebooks.
 
-jupyprint can print LaTeX strings (including 'live' variables), it will show
-numpy arrays as LaTeX matrices, and will also render nice-looking pandas
-dataframes.
+jupyprint let's you print your variables as markdown/LaTex.
+
+You can print LaTeX strings (including 'live' variables).
+You can print numpy arrays as LaTeX matrices.
+You can print nice-looking pandas dataframes.
 
 See `jupyprint_demo.ipynb` for a demo. Here are some screenshots from the demo
 (there are no markdown cells in the notebook, all the markdown/LaTeX is printed
