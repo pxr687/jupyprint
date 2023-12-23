@@ -13,7 +13,7 @@ dataframes.
 
 To install use: `pip install jupyprint`
 
-See `https://github.com/pxr687/jupyprint/blob/main/jupyprint_demo.ipynb` for a 
+See https://github.com/pxr687/jupyprint/blob/main/jupyprint_demo.ipynb for a 
 demo. Here are some screenshots from the demo (there are no markdown cells in 
 the demo notebook, all the markdown/LaTeX is printed from the code cells):
 
