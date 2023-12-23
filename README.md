@@ -1,5 +1,7 @@
 # jupyprint
 
+`pip install jupyprint`
+
 A simple python package to print markdown and LaTeX equations from code cells in
 Jupyter notebooks.
 
