@@ -1,7 +1,5 @@
 # jupyprint
 
-`pip install jupyprint`
-
 A simple python package to print markdown and LaTeX equations from code cells in
 Jupyter notebooks.
 
@@ -12,6 +10,8 @@ are using in your jupyter code cells).
 
 You can print numpy arrays as LaTeX matrices and you can print nice-looking pandas
 dataframes.
+
+To install use: `pip install jupyprint`
 
 See `jupyprint_demo.ipynb` for a demo. Here are some screenshots from the demo
 (there are no markdown cells in the notebook, all the markdown/LaTeX is printed
