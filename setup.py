@@ -6,7 +6,7 @@ long_description = (this_directory / "README.md").read_text()
 
 setup(
     name="jupyprint",
-    version="0.1.2",
+    version="0.1.3",
     author="Peter Rush",
     description="A simple python package to print markdown and LaTeX equations from code cells in Jupyter notebooks.",
     long_description=long_description,
