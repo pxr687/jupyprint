@@ -3,7 +3,7 @@
 A simple python package to print markdown and LaTeX equations from code cells in
 Jupyter notebooks.
 
-`jupyprint` let's you print your variables as markdown/LaTex.
+`jupyprint` let's you print your variables as markdown/LaTeX.
 
 You can print LaTeX strings involving 'live' variables (e.g. the variables you
 are using in your jupyter code cells). 
