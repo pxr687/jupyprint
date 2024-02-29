@@ -1,5 +1,7 @@
 # jupyprint
 
+[![Downloads](https://static.pepy.tech/badge/jupyprint)](https://pepy.tech/project/jupyprint)
+
 A simple python package to print markdown and LaTeX equations from code cells in
 Jupyter notebooks.
 
