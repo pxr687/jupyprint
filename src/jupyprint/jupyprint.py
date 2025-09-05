@@ -122,7 +122,7 @@ def to_md(x, quote_strings=True, strings_in_typefont=True,
         notebook using the jupyprint() function. Unless x is a pandas.DataFrame,
         then it will be returned as a pandas.DataFrame.
     """
-    # if input is a bool, string, dict, list, tuple or number, display  as 
+    # If input is a bool, string, dict, list, tuple or number, display  as 
     # markdown/LaTeX (will also work for strings with LaTeX syntax e.g. these 
     # will be printed as LaTeX)
     if (isinstance(x, (bool, np.bool_, str, np.str_, dict, list, tuple, int,
@@ -131,14 +131,14 @@ def to_md(x, quote_strings=True, strings_in_typefont=True,
             print(str(x))
         return Markdown(str(x)) 
     
-    # if input is a numpy array convert to markdown/LaTeX, then display
+    # If input is a numpy array convert to markdown/LaTeX, then display
     elif (isinstance(x, np.ndarray)):
         output = f"${arraytex(x, quote_strings=quote_strings, strings_in_typefont=strings_in_typefont)}$"
         if return_raw_string == True:
             print(output)
         return Markdown(output)
 
-    # if the input is a pandas DataFrame, display it nicely rendered
+    # If the input is a pandas DataFrame, display it nicely rendered
     elif (isinstance(x, pd.core.frame.DataFrame)):
         return x
 
@@ -181,32 +181,32 @@ def arraytex(arr, quote_strings=True, strings_in_typefont=True,
     >>> y = np.array([[True], [False], [True]])
     >>> jupyprint(f"${arraytex(x)} * {arraytex(y)} = {arraytex(np.dot(x, y))}$")
     """
-    # override other arguments, if contains_latex == True
+    # Override other arguments, if contains_latex == True
     if contains_latex == True:
         quote_strings = False
         strings_in_typefont = False
 
-    # determine if the input is a matrix (two dimensions, more than one column),
+    # Determine if the input is a matrix (two dimensions, more than one column),
     # display as a matrix
     if (len(arr.shape) == 2):
         if (arr.shape[1] > 1):
             return _matrix(arr, quote_strings=quote_strings, 
             strings_in_typefont=strings_in_typefont)
 
-    # if the input is a column vector (1 column), display as a
+    # If the input is a column vector (1 column), display as a
     # column vector
     if (len(arr.shape) == 2):
         if (arr.shape[1] == 1):
             return _matrix(arr.reshape(-1, 1), quote_strings=quote_strings, 
             strings_in_typefont=strings_in_typefont)
 
-    # if the input is a row vector (1 row), display as a row vector
+    # If the input is a row vector (1 row), display as a row vector
     elif len(arr.shape) == 1:
         return _matrix(arr.reshape(1, -1), quote_strings=quote_strings,
         strings_in_typefont=strings_in_typefont,
                         end_string="")
 
-    # warn user array is too high-dimensional, if this is the case
+    # Warn user array is too high-dimensional, if this is the case
     else:
         raise ValueError("Array must be 1 or 2 dimensional.")
 
@@ -216,36 +216,36 @@ def arraytex(arr, quote_strings=True, strings_in_typefont=True,
 def _matrix(arr, quote_strings=True, strings_in_typefont=True, 
             end_string=r" \\"):
 
-    # get the number of columns
+    # Get the number of columns
     n_cols = arr.shape[1]
 
-    # original shape of array
+    # Original shape of array
     original_shape = arr.shape
 
-    # flattened array 
+    # Flattened array 
     flattened_array = arr.flatten()
 
-    # for elements of the matrix which are strings or bools, make sure the
+    # For elements of the matrix which are strings or bools, make sure the
     # elements are shown as text in latex
     flattened_array = np.array([_needs_latex_text(el, \
                         quote_strings=quote_strings,
                         strings_in_typefont=strings_in_typefont) \
                         for el in flattened_array])
     
-    # reshape to shape of original array
+    # Reshape to shape of original array
     arr = flattened_array.reshape(original_shape)
 
-    # get the start and end of the latex matrix syntax
+    # Get the start and end of the latex matrix syntax
     left = "\\begin{{bmatrix}}{{{}}} ".format("")
     right = " \\end{bmatrix}"
 
-    # get the rows of the matrix and join them to the start/end of the matrix
+    # Get the rows of the matrix and join them to the start/end of the matrix
     rows = [_row_f_string(n_cols, end_string=end_string).format(*row)
             for row in arr]
     return left + ' '.join(rows) + right
 
 def _needs_latex_text(el, quote_strings=True, strings_in_typefont=True):
-    # add LaTex `\text{}` around elements of array, if the element is a 
+    # Add LaTex `\text{}` around elements of array, if the element is a 
     # string or a bool
     if isinstance(el, (bool, np.bool_)):
         return r'\text{' + str(el) + r'}'
