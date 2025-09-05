@@ -5,7 +5,8 @@ import numpy as np
 # ==============================================================================
 # USER FACING FUNCTIONS
 
-def jupyprint(x, quote_strings=True, strings_in_typefont=True):
+def jupyprint(x, quote_strings=True, strings_in_typefont=True, 
+              return_raw_string=False):
     """ Nice-looking Jupyter notebook display for value x.
 
     This function will display the value as Markdown/LaTeX if `x` is of type
@@ -32,6 +33,11 @@ def jupyprint(x, quote_strings=True, strings_in_typefont=True):
     strings_in_typefont : {False, True}
         Whether to show strings in "typewriter" font, where the output is a
         vector or matrix. Default is True.
+    return_raw_string : {False, True}
+        Whether to print the LaTeX as a string, in addition to the rendered
+        Markdown. This is useful if you want to put the equation etc. in a 
+        Markdown cell of a Jupyter notebook, but containing variables/data from
+        a code cell. Default is False.
 
     Returns
     -------
@@ -50,7 +56,7 @@ def jupyprint(x, quote_strings=True, strings_in_typefont=True):
     >>> jupyprint(5 + 3j)
 
     LaTex:
-    >>> jupyprint("$ \sum{(y_i - \hat{y})^2} $")
+    >>> jupyprint("$ \\sum{(y_i - \\hat{y})^2} $")
 
     numpy.array (row vector):
     >>> import numpy as np
@@ -81,9 +87,11 @@ def jupyprint(x, quote_strings=True, strings_in_typefont=True):
     """
     # jupyprint the input
     display(to_md(x, quote_strings=quote_strings, 
-                  strings_in_typefont=strings_in_typefont))
+                  strings_in_typefont=strings_in_typefont,
+                  return_raw_string=return_raw_string))
 
-def to_md(x, quote_strings=True, strings_in_typefont=True):
+def to_md(x, quote_strings=True, strings_in_typefont=True,
+          return_raw_string=False):
     """
     Build a Markdown object for input value `x`. 
 
@@ -101,6 +109,11 @@ def to_md(x, quote_strings=True, strings_in_typefont=True):
     strings_in_typefont : {False, True}
         Whether to show strings in "typewriter" font, where the output is a
         vector or matrix. Default is True.
+    return_raw_string : {False, True}
+        Whether to print the LaTeX as a string, in addition to the rendered
+        Markdown. This is useful if you want to put the equation etc. in a 
+        Markdown cell of a Jupyter notebook, but containing variables/data from
+        a code cell. Default is False.
 
     Returns
     -------
@@ -114,11 +127,16 @@ def to_md(x, quote_strings=True, strings_in_typefont=True):
     # will be printed as LaTeX)
     if (isinstance(x, (bool, np.bool_, str, np.str_, dict, list, tuple, int,
                        float, complex))):
+        if return_raw_string == True:
+            print(str(x))
         return Markdown(str(x)) 
     
     # if input is a numpy array convert to markdown/LaTeX, then display
     elif (isinstance(x, np.ndarray)):
-        return Markdown(f"${arraytex(x, quote_strings=quote_strings, strings_in_typefont=strings_in_typefont)}$")
+        output = f"${arraytex(x, quote_strings=quote_strings, strings_in_typefont=strings_in_typefont)}$"
+        if return_raw_string == True:
+            print(output)
+        return Markdown(output)
 
     # if the input is a pandas DataFrame, display it nicely rendered
     elif (isinstance(x, pd.core.frame.DataFrame)):

@@ -40,7 +40,7 @@ def test_all_jupyprints():
         # ======================================================================
         # LaTex:
         jupyprint("Here is some LaTeX:")
-        jupyprint("$ \sum{(y_i - \hat{y})^2} $")
+        jupyprint("$ \\sum{(y_i - \\hat{y})^2} $")
 
         # ======================================================================
         # numpy.array (row vector):
@@ -129,7 +129,7 @@ def test_all_jupyprints():
         jupyprint(f"""Here is are some {name_of_thing}, jupyprinted with default settings:""")
         jupyprint(f"""Hello, let us log this matrix: ${arraytex(x)}$. Here is
                    the logged version: $ln({arraytex(x)}) = {arraytex(np.log(x).round(2))}$""")
-        jupyprint("Here is some LaTeX $\hat{y} = b_0 + b_1x_1$." + f"It is chained with LaTeX printouts of some matrix multiplication with the numpy arrays above: ${arraytex(x)} * {arraytex(y)} = {arraytex(np.dot(x, y))}$")
+        jupyprint("Here is some LaTeX $\\hat{y} = b_0 + b_1x_1$." + f"It is chained with LaTeX printouts of some matrix multiplication with the numpy arrays above: ${arraytex(x)} * {arraytex(y)} = {arraytex(np.dot(x, y))}$")
 
         for param1 in [True, False]:
             for param2 in [True, False]:
@@ -137,7 +137,7 @@ def test_all_jupyprints():
                         `quote_strings={param1}` and `strings_in_typefont={param2}`:""")
                     jupyprint(f"""Hello, let us log this matrix: ${arraytex(x, quote_strings=param1, strings_in_typefont=param2)}$. Here is
                    the logged version: $ln({arraytex(x, quote_strings=param1, strings_in_typefont=param2)}) = {arraytex(np.log(x).round(2), quote_strings=param1, strings_in_typefont=param2)}$""")
-                    jupyprint("Here is some LaTeX $\hat{y} = b_0 + b_1x_1$." + f"It is chained with LaTeX printouts of some matrix multiplication with the numpy arrays above: ${arraytex(x, quote_strings=param1, strings_in_typefont=param2)} * {arraytex(y, quote_strings=param1, strings_in_typefont=param2)} = {arraytex(np.dot(x, y), quote_strings=param1, strings_in_typefont=param2)}$")
+                    jupyprint("Here is some LaTeX $\\hat{y} = b_0 + b_1x_1$." + f"It is chained with LaTeX printouts of some matrix multiplication with the numpy arrays above: ${arraytex(x, quote_strings=param1, strings_in_typefont=param2)} * {arraytex(y, quote_strings=param1, strings_in_typefont=param2)} = {arraytex(np.dot(x, y), quote_strings=param1, strings_in_typefont=param2)}$")
 
         # ======================================================================
         # mixed arrays chained with f-string and non-LaTeX strings
@@ -160,7 +160,7 @@ def test_all_jupyprints():
         # linear regression model with symbols
         design_matrix = np.array([np.repeat(1, 5), np.repeat("$x_1$", 5), np.repeat("$x_2$", 5)]).T
         beta_vector = np.array(['$b_'+ str(i) + '$' for i in np.arange(0, 3)]).reshape(3, 1)
-        y_vector = np.array(['$\hat{y_'+ str(i) + '}$' for i in np.arange(1, 6)]).reshape(5, 1)
+        y_vector = np.array(['$\\hat{y_'+ str(i) + '}$' for i in np.arange(1, 6)]).reshape(5, 1)
 
         name_of_thing = "the linear model (in symbolic form)"
 
