@@ -129,7 +129,8 @@ def to_md(x, quote_strings=True, strings_in_typefont=True):
 
 def arraytex(arr, quote_strings=True, strings_in_typefont=True, 
              contains_latex=False):
-    """Convert a 1D or 2D numpy array to latex markdown.
+    """Convert a 1D or 2D numpy array to latex markdown. You will need this if
+    you are using f-strings with multiple arrays, see the examples below.
 
     Parameters
     ----------
@@ -154,6 +155,13 @@ def arraytex(arr, quote_strings=True, strings_in_typefont=True,
     -------
     latex: string
         A latex string.
+
+    Examples
+    --------
+    >>> from jupyprint import jupyprint, arraytex
+    >>> x = np.array([[10, 100, 200], [8, 9, 77]])
+    >>> y = np.array([[True], [False], [True]])
+    >>> jupyprint(f"${arraytex(x)} * {arraytex(y)} = {arraytex(np.dot(x, y))}$")
     """
     # override other arguments, if contains_latex == True
     if contains_latex == True:
