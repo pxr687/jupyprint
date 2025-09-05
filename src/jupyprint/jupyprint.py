@@ -42,7 +42,7 @@ def jupyprint(x, quote_strings=True, strings_in_typefont=True,
     Returns
     -------
     None
-        It prints input value x as markdown/LaTeX/HTML, which can be rendered in
+        It prints input value x as Markdown/LaTeX/HTML, which can be rendered in
         a Jupyter notebook.
 
     Examples
